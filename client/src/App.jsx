@@ -3,6 +3,7 @@ import { BsGithub, BsFacebook, BsTwitter } from "react-icons/bs";
 import { SiHackerone } from "react-icons/si";
 import axios from "axios";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 function App() {
   const [user, setUser] = useState({
@@ -31,8 +32,19 @@ function App() {
         email,
         password,
       };
+
+      axios
+        .post("http://localhost:8000/auth/register", payload)
+        .then((res) => console.log(res));
     } else if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      Swal.fire({
+        icon: "error",
+        title: "Password Mismatch",
+        text: "Passwords do not match",
+        footer: '<a href="#password">Resolve the issue ? </a>',
+        background: "#000",
+        color: "#fff",
+      });
     }
   };
 
