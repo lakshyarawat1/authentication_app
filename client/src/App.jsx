@@ -2,7 +2,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BsGithub, BsFacebook, BsTwitter } from "react-icons/bs";
 import { SiHackerone } from "react-icons/si";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 function App() {
@@ -33,9 +33,19 @@ function App() {
         password,
       };
 
-      axios
-        .post("http://localhost:8000/auth/register", payload)
-        .then((res) => console.log(res));
+      console.log(payload);
+
+      axios.post("http://localhost:8000/auth/register", payload).then((res) => {
+        if (res.data === "created user") {
+          Swal.fire({
+            icon: "success",
+            title: "User Registered",
+            text: `User has be registered`,
+            background: "#000",
+            color: "#fff",
+          });
+        }
+      });
     } else if (password !== confirmPassword) {
       Swal.fire({
         icon: "error",
@@ -47,6 +57,12 @@ function App() {
       });
     }
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/profile").then((response) => {
+      console.log(response)
+    });
+  }, []);
 
   return (
     <div className="bg-[#3e3838] h-[100vh] fixed">
